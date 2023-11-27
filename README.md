@@ -8,7 +8,7 @@ En esta prueba técnica, se espera que construyas una base de datos en AWS, extr
 
 ### Construcción de una base de datos en AWS
 1. Cuenta AWS: En caso de no tener, debe crear una.
-2. Crear base de datos: Se accede al servicio Amazom RDS y crear un base de datos, se hace la configuración necesia y se crea un usuario y un contraseña.
+2. Crear base de datos: Se accede al servicio Amazom RDS y crear una base de datos, se hace la configuración necesaria y se crea un usuario y un contraseña.
 3. Verifique que en los grupos de seguridad: Agregue un permisos de entrada que permita todo tipo de trafico.
 4. Crear base de datos y tabla: Esto se puede hacer mediante codigo o de una interfaz grafica como *MySQL Workbench*.
 
