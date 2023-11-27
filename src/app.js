@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const morgan = require('morgan');
 const path = require('path');
 const mysql = require('mysql');
@@ -17,12 +18,13 @@ app.set('views', path.join(__dirname,'views'));
 //middlewares
 app.use(morgan('dev'))
 app.use(myConnection(mysql,{
-    host: 'database-2.cdbvdh3oxmwi.us-east-1.rds.amazonaws.com',
-    user:'jdestrada',
-    password:'12345678',
-    port: 3306,
-    database: 'Prueba'
+    host: process.env.host_db,
+    user: process.env.user_db,
+    password: process.env.password_db,
+    port: process.env.port_db,
+    database: process.env.database_name
 }, 'single'));
+
 
 
 //routes
@@ -37,3 +39,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.listen(app.set('port'), ()=> {
     console.log("Sever on port 3000");
 });
+
+console.log()
