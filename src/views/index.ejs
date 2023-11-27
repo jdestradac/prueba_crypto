@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prueba</title>
+        <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    </head>
+    <body> 
+        <nav class="navbar navbar-dark bg-dark" data-bs-theme="dark">
+            <a class="navbar-brand" href="#">Cryptocurrency Chart</a>
+        </nav>
+        <canvas id="lineChart" width="250" height="250"></canvas>
+        
+    </body>
+    <footer>
+        <script>
+            var dataj = '<%-JSON.stringify(data)%>'
+            var data = JSON.parse(dataj);
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+        <script src="./js/grafica.js"></script>
+
+    </footer>
+</html>
