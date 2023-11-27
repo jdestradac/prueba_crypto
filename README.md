@@ -1,6 +1,10 @@
 # Prueba Efrouting
 En esta prueba técnica, se espera que construyas una base de datos en AWS, extraigas información de la API de CoinMarketCap mediante una función Lambda escrita en Python, y luego despliegues una página web donde muestres un gráfico con la información extraída utilizando un contenedor Docker.
 
+ ## App
+[DNS AWS](lb-crypto-325957854.us-east-1.elb.amazonaws.com)
+[DNS personalizado](http://cryptochart.ddns.net/)
+
 ## Requisitos
 *  Construcción de una base de datos en AWS
 *  Extracción de información desde la API de CoinMarketCap utilizando una función Lambda
@@ -73,7 +77,11 @@ En esta prueba técnica, se espera que construyas una base de datos en AWS, extr
 4. Despliegue en ECS: Para el despliegue de la imagen en ECS se necesitan una serie de pasos
    * Asegurese de tener AWS CLI instalado
    * Credenciales: Para crear credenciales en AWS, debe ingresar al servicio [IAM](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/home), haga click en *Mis credenciales de seguridad* y luego en *Crear claves de acceso*
-   * AWS Configure: Para la configuración ecriba en la terminal  ``` aws configure ``` y llene la información requerida con la informacion de la clave de acesso previamente creada 
-   
+   * AWS Configure: Para la configuración escriba en la terminal  ``` aws configure ``` y llene la información requerida con la informacion de la clave de acesso previamente creada.
+   * AWS ECR: Lo siguiente es crear un repositorio donde se guaradará la imagen generada, para esto, vaya a [ECR](https://us-east-1.console.aws.amazon.com/ecr/repositories?region=us-east-1) y de click en la opción *Crear repositorio*, una vez creado ingrese a este y de click en *Ver comandos de envio*, siga las instrucciones ahi descritas y la imagen se cargara en el repositorio.
+   * AWC ECS: Vaya al servicio [ECs](https://us-east-1.console.aws.amazon.com/ecs/v2/home?region=us-east-1) y da click en la opción de *Crear cluster*, haga las configuraciones necesarias
+   * Definición de tareas: Una vez el cluster creado dirigase a *Definición de tareas* y posteriormente a *Crear definiciones de tarea*, haga las configuraciones necesarias (Necesistara el URI de la imagen cargada en el repositorio).
+   * Deploy: Una vez cree la tarea le saldra una lista despegable llamada *Deploy*, dele click y escoja *Crear Servicio*
+   * DNS: Una vez el servicio creado ingrese a este y vaya a la opción de *redes*, ahi encontrará un DNS dado por AWS para acceder a la pagina web, si quierE puede tomar la ip y configurar un DNS personalizado en aplicaciones como [NO-IP](https://www.noip.com/remote-access?utm_source=bing&utm_medium=cpc&utm_campaign=free-dynamic-dns&msclkid=7ead558aec611deaf09a30ee1595918f)
      
    
