@@ -11,7 +11,7 @@ const app= express();
 const Routes = require('./routes/routes');
  
 // settings
-app.set('port', process.env.PORT||3000);
+app.set('port', process.env.PORT||80);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
 
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //starting the server
 app.listen(app.set('port'), ()=> {
-    console.log("Sever on port 3000");
+    console.log("Sever on port ");
 });
 
 console.log()

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var labels = [];
   var btcPrices = [];
   var ethPrices = [];
-  console.log(data)
+
 
   for (var i = 0; i < data.length; i++) {
     var item = data[i];
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var lineChart = new Chart(ctx, {
     type: 'line',
     data: {
+      
       labels: labels,
       datasets: [
         {
@@ -43,7 +44,11 @@ document.addEventListener("DOMContentLoaded", function() {
       scales: {
         y: {
           beginAtZero: true
-        }
+        },
+        title: {
+          display: true,
+          text: 'Price'
+      }
       },
       responsive: true, 
       maintainAspectRatio: false 
