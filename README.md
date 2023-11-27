@@ -1,87 +1,108 @@
 # Prueba Efrouting
+
 En esta prueba técnica, se espera que construyas una base de datos en AWS, extraigas información de la API de CoinMarketCap mediante una función Lambda escrita en Python, y luego despliegues una página web donde muestres un gráfico con la información extraída utilizando un contenedor Docker.
 
- ## App
-[DNS AWS](lb-crypto-325957854.us-east-1.elb.amazonaws.com)
-[DNS personalizado](http://cryptochart.ddns.net/)
+## App
+- [DNS AWS](lb-crypto-325957854.us-east-1.elb.amazonaws.com)
+- [DNS personalizado](http://cryptochart.ddns.net/)
 
 ## Requisitos
-*  Construcción de una base de datos en AWS
-*  Extracción de información desde la API de CoinMarketCap utilizando una función Lambda
-*  Despliegue de una página web en un contenedor Docker
+- Construcción de una base de datos en AWS
+- Extracción de información desde la API de CoinMarketCap utilizando una función Lambda
+- Despliegue de una página web en un contenedor Docker
 
 ### Construcción de una base de datos en AWS
-1. Cuenta AWS: En caso de no tener, debe crear una.
-2. Crear base de datos: Se accede al servicio Amazom RDS y crear una base de datos, se hace la configuración necesaria y se crea un usuario y un contraseña.
-3. Verifique que en los grupos de seguridad: Agregue un permisos de entrada que permita todo tipo de trafico.
-4. Crear base de datos y tabla: Esto se puede hacer mediante codigo o de una interfaz grafica como *MySQL Workbench*.
+1. **Cuenta AWS:** En caso de no tener, debes crear una.
+2. **Crear base de datos:** Accede al servicio Amazon RDS y crea una base de datos. Realiza la configuración necesaria y crea un usuario y una contraseña.
+3. **Verificar grupos de seguridad:** Agrega permisos de entrada que permitan todo tipo de tráfico.
+4. **Crear base de datos y tabla:** Puedes hacer esto mediante código o mediante una interfaz gráfica como *MySQL Workbench*.
+
 
 ### Extracción de información desde la API de CoinMarketCap utilizando una función Lambda
-1. Ingresar al servicio *Lambda* en **AWS**
-2. Escoger la opción *Crear una función*, se hace la configuración necesaria y se escoge **Python** como *Tiempo de ejecución*
-3. Se hace la logica como u n función de **Pyhton** estandar
-   * Variables de entorno: Para la valores requerido para la conexión a la base de datos y key para extraer la información de la ap, se crean varibles de entorno en *Configuración >    Variables de entorno*
-   ```script
-   
-    database:  'name database'
-    host_db:  'your host'
-    password_db:  'your password'
-    user_db:  'your user'
-    pro_api_key:  'your api_key'
-    
-   ```
-   * Conexión a la base de datos: Con los variables de entorno configuradas se crea la conecta a la base de datos
-   * Extración de información de la api: Vaya a la [documentación](https://coinmarketcap.com/api/documentation/v1/#) de la api, para obtener su api_key deberá registrase en la pagina de CoinMarkert
-   * Introducir los datos extraidos a la base de datos: Una vez extaraidos los datos, se introducen los datos a la base de datsos mediante un *INSERT INTO*
 
-4. Crear capas: Para poder acceder a las librerias requeridas en el codigo, en *Lambda* se crean capas
+1. **Ingresar al servicio Lambda en AWS:**
+   - Seleccionar la opción *Crear una función*, realizar la configuración necesaria y escoger **Python** como *Tiempo de ejecución*.
 
-      En la interfaz de *Lambda* se ingresa en *Recursos adicionales > capas*, se le da la opción de *crear capaz*, se configura un nombre y se sube un archivo zip
-      
-      **Contrución del archivo zip**
-      
-      De forma local se crea una carpeta con el nombre de *python*, se accede mediante el cmd ejecutaremos
-      ```cmd
-       pip3 install "library" -t .
-      ```
-      Y si se genera el error *ERROR: Can not combine '--user' and '--target'*, se le agregra *--no-user*
-      ```cmd
-       pip3 install "library" -t . --no-user
-      ```
-      Con esa carpeta se creará el archivo zip
-   
-5. Añadir capa: Se regresa la función *Lambda* y se le da en lo opción *Añadir capas*, se escoje *Capas personalizadas* y escoge la capa creada
-6. Agregar desecandenador: Se regresa a la función nuevamente y se escoge la opción **Agregar desecandenador**, se busca y elige *EventBridge (CloudWatch Events)*, se da la opción de *Crear regla* y para  **Schedule expression** se configura un ```rate('#hours' hours)```
-7. Verificar el funcionamiento del la funcción ataves de un *test*
+2. **Implementar la lógica como una función estándar de Python:**
+   - **Variables de entorno:** Configurar variables de entorno en *Configuración > Variables de entorno* para los valores necesarios para la conexión a la base de datos y la clave para extraer información de la API.
+
+     ```script
+     database: 'nombre de la base de datos'
+     host_db: 'tu host'
+     password_db: 'tu contraseña'
+     user_db: 'tu usuario'
+     pro_api_key: 'tu clave API'
+     ```
+
+   - **Conexión a la base de datos:** Con las variables de entorno configuradas, establecer la conexión a la base de datos.
+
+   - **Extracción de información de la API:** Consultar la [documentación](https://coinmarketcap.com/api/documentation/v1/#) de la API. Para obtener la clave API, es necesario registrarse en la página de CoinMarketCap.
+
+   - **Introducir los datos extraídos en la base de datos:**
+     - Una vez extraídos los datos, insertarlos en la base de datos mediante un *INSERT INTO*.
+
+3. **Crear capas:**
+   - Para acceder a las bibliotecas requeridas en el código, en *Lambda*, crear capas.
+     - En la interfaz de *Lambda*, ingresar en *Recursos adicionales > Capas*, seleccionar *Crear capa*, configurar un nombre y subir un archivo ZIP.
+
+     **Construcción del archivo ZIP:**
+     - Localmente, crear una carpeta con el nombre de *python*. Acceder mediante el cmd y ejecutar:
+
+     ```cmd
+     pip3 install "library" -t .
+     ```
+
+     - En caso de un error *ERROR: Can not combine '--user' and '--target'*, agregar *--no-user*:
+
+     ```cmd
+     pip3 install "library" -t . --no-user
+     ```
+
+     - Con esa carpeta, crear el archivo ZIP.
+
+4. **Añadir capa:**
+   - Regresar a la función *Lambda* y seleccionar *Añadir capas*, elegir *Capas personalizadas* y escoger la capa creada.
+
+5. **Agregar desencadenador:**
+   - Volver a la función nuevamente y seleccionar **Agregar desencadenador**. Buscar y elegir *EventBridge (CloudWatch Events)*, seleccionar *Crear regla* y configurar **Schedule expression** con `rate('#hours' hours)`.
+
+6. **Verificar el funcionamiento de la función a través de un test.**
+
 
 ## Despliegue de una página web en un contenedor Docker
-1. Repositorio: Si quiere probar este reposirotio siga los siguientes pasos:
-   * Clonar repositorio: Ingrese a repositorio y en la opción de *<>code*, copie la URL del repositorio y haga un git clone
-   * Dependencias: Una vez clonado el repositorio vaya a la terminal y escriba
-     ```script 
-      npm install
-     ```
-   * Varibles de entorno: Una vez instaladas las dependencias, cree un archivo llamado *.env* y configure las variables de entorno
-     ```script 
-      host_db= "host o punto de acceso"
-      user_db= "user"
-      password_db= "password*"
-      port_db= "port"
-      database_name= "name db"
-     ```
-3. Docker: Asegurese de tener *Docker destok* instalado
-   * Crear imagen. para eso debe escribir en la terminal el sigueinte comando
-      ```script 
-      docker build -t "image_name" .
-    ```
-4. Despliegue en ECS: Para el despliegue de la imagen en ECS se necesitan una serie de pasos
-   * Asegurese de tener AWS CLI instalado
-   * Credenciales: Para crear credenciales en AWS, debe ingresar al servicio [IAM](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/home), haga click en *Mis credenciales de seguridad* y luego en *Crear claves de acceso*
-   * AWS Configure: Para la configuración escriba en la terminal  ``` aws configure ``` y llene la información requerida con la informacion de la clave de acesso previamente creada.
-   * AWS ECR: Lo siguiente es crear un repositorio donde se guaradará la imagen generada, para esto, vaya a [ECR](https://us-east-1.console.aws.amazon.com/ecr/repositories?region=us-east-1) y de click en la opción *Crear repositorio*, una vez creado ingrese a este y de click en *Ver comandos de envio*, siga las instrucciones ahi descritas y la imagen se cargara en el repositorio.
-   * AWC ECS: Vaya al servicio [ECs](https://us-east-1.console.aws.amazon.com/ecs/v2/home?region=us-east-1) y da click en la opción de *Crear cluster*, haga las configuraciones necesarias
-   * Definición de tareas: Una vez el cluster creado dirigase a *Definición de tareas* y posteriormente a *Crear definiciones de tarea*, haga las configuraciones necesarias (Necesistara el URI de la imagen cargada en el repositorio).
-   * Deploy: Una vez cree la tarea le saldra una lista despegable llamada *Deploy*, dele click y escoja *Crear Servicio*
-   * DNS: Una vez el servicio creado ingrese a este y vaya a la opción de *redes*, ahi encontrará un DNS dado por AWS para acceder a la pagina web, si quierE puede tomar la ip y configurar un DNS personalizado en aplicaciones como [NO-IP](https://www.noip.com/remote-access?utm_source=bing&utm_medium=cpc&utm_campaign=free-dynamic-dns&msclkid=7ead558aec611deaf09a30ee1595918f)
-     
+
+1. **Repositorio:**
+   - Si quieres probar este repositorio, sigue los siguientes pasos:
+      - Clonar repositorio: Ingresa al repositorio y en la opción de *<>code*, copia la URL del repositorio y realiza un git clone.
+      - Dependencias: Una vez clonado el repositorio, ve a la terminal y escribe:
+        ```script
+        npm install
+        ```
+      - Variables de entorno: Después de instalar las dependencias, crea un archivo llamado *.env* y configura las variables de entorno:
+        ```script
+        host_db= "host o punto de acceso"
+        user_db= "user"
+        password_db= "password*"
+        port_db= "port"
+        database_name= "name db"
+        ```
+
+3. **Docker:**
+   - Asegúrate de tener *Docker Desktop* instalado.
+      - Crear imagen: Para esto, escribe en la terminal el siguiente comando:
+        ```script
+        docker build -t "nombre_de_la_imagen" .
+        ```
+
+4. **Despliegue en ECS:**
+   - Para el despliegue de la imagen en ECS, se necesitan una serie de pasos.
+      - Asegúrate de tener AWS CLI instalado.
+      - Credenciales: Para crear credenciales en AWS, ingresa al servicio [IAM](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/home), haz clic en *Mis credenciales de seguridad* y luego en *Crear claves de acceso*.
+      - AWS Configure: Para la configuración, escribe en la terminal `aws configure` y llena la información requerida con la información de la clave de acceso previamente creada.
+      - AWS ECR: Crea un repositorio donde se guardará la imagen generada. Ve a [ECR](https://us-east-1.console.aws.amazon.com/ecr/repositories?region=us-east-1), haz clic en la opción *Crear repositorio*. Una vez creado, ingresa a este y haz clic en *Ver comandos de envío*. Sigue las instrucciones descritas y la imagen se cargará en el repositorio.
+      - AWS ECS: Ve al servicio [ECS](https://us-east-1.console.aws.amazon.com/ecs/v2/home?region=us-east-1) y haz clic en la opción *Crear cluster*. Realiza las configuraciones necesarias.
+      - Definición de tareas: Una vez creado el cluster, dirígete a *Definición de tareas* y luego a *Crear definiciones de tarea*. Realiza las configuraciones necesarias (necesitarás el URI de la imagen cargada en el repositorio).
+      - Deploy: Una vez creada la tarea, verás una lista desplegable llamada *Deploy*, haz clic y elige *Crear Servicio*.
+      - Acceso a la página web: Una vez creado el servicio, ingresa a este y ve a la opción de *redes*. Allí encontrarás un DNS proporcionado por AWS para acceder a la página web. Si quieres, puedes tomar la IP y configurar un DNS personalizado en aplicaciones como [NO-IP](https://www.noip.com/remote-access?utm_source=bing&utm_medium=cpc&utm_campaign=free-dynamic-dns&msclkid=7ead558aec611deaf09a30ee1595918f).
+
    
