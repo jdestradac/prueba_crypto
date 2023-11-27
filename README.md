@@ -27,7 +27,7 @@ En esta prueba técnica, se espera que construyas una base de datos en AWS, extr
     
    ```
    * Conexión a la base de datos: Con los variables de entorno configuradas se crea la conecta a la base de datos
-   * Extración de información de la api: Vaya a la [documentación](https://coinmarketcap.com/api/documentation/v1/#) de la api
+   * Extración de información de la api: Vaya a la [documentación](https://coinmarketcap.com/api/documentation/v1/#) de la api, para obtener su api_key deberá registrase en la pagina de CoinMarkert
    * Introducir los datos extraidos a la base de datos: Una vez extaraidos los datos, se introducen los datos a la base de datsos mediante un *INSERT INTO*
 
 4. Crear capas: Para poder acceder a las librerias requeridas en el codigo, en *Lambda* se crean capas
@@ -46,6 +46,34 @@ En esta prueba técnica, se espera que construyas una base de datos en AWS, extr
       ```
       Con esa carpeta se creará el archivo zip
    
-6. Añadir capa: Se regresa la función *Lambda* y se le da en lo opción *Añadir capas*, se escoje *Capas personalizadas* y escoge la capa creada
-7. Agregar desecandenador: Se regresa a la función nuevamente y se escoge la opción **Agregar desecandenador**, se busca y elige *EventBridge (CloudWatch Events)*, se da la opción de *Crear regla* y para  **Schedule expression** se configura un ```rate('#hours' hours)```
+5. Añadir capa: Se regresa la función *Lambda* y se le da en lo opción *Añadir capas*, se escoje *Capas personalizadas* y escoge la capa creada
+6. Agregar desecandenador: Se regresa a la función nuevamente y se escoge la opción **Agregar desecandenador**, se busca y elige *EventBridge (CloudWatch Events)*, se da la opción de *Crear regla* y para  **Schedule expression** se configura un ```rate('#hours' hours)```
+7. Verificar el funcionamiento del la funcción ataves de un *test*
+
+## Despliegue de una página web en un contenedor Docker
+1. Repositorio: Si quiere probar este reposirotio siga los siguientes pasos:
+   * Clonar repositorio: Ingrese a repositorio y en la opción de *<>code*, copie la URL del repositorio y haga un git clone
+   * Dependencias: Una vez clonado el repositorio vaya a la terminal y escriba
+     ```script 
+      npm install
+     ```
+   * Varibles de entorno: Una vez instaladas las dependencias, cree un archivo llamado *.env* y configure las variables de entorno
+     ```script 
+      host_db= "host o punto de acceso"
+      user_db= "user"
+      password_db= "password*"
+      port_db= "port"
+      database_name= "name db"
+     ```
+3. Docker: Asegurese de tener *Docker destok* instalado
+   * Crear imagen. para eso debe escribir en la terminal el sigueinte comando
+      ```script 
+      docker build -t "image_name" .
+    ```
+4. Despliegue en ECS: Para el despliegue de la imagen en ECS se necesitan una serie de pasos
+   * Asegurese de tener AWS CLI instalado
+   * Credenciales: Para crear credenciales en AWS, debe ingresar al servicio [IAM](https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/home), haga click en *Mis credenciales de seguridad* y luego en *Crear claves de acceso*
+   * AWS Configure: Para la configuración ecriba en la terminal  ``` aws configure ``` y llene la información requerida con la informacion de la clave de acesso previamente creada 
+   
+     
    
